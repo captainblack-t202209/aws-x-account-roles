@@ -13,8 +13,8 @@ Parameters:
   pChildAccountAlias:
     Description: Alias for the child account
     Type: String
-  pMaxSessionDuration:
-    Description: Session duration in seconds (Min - 1hr, Max - 12 hrs)
+  pMaxApiSessionDuration:
+    Description: Session duration for CLI / API in seconds (Min - 1hr, Max - 12 hrs)
     Type: Number
     MaxValue: 43200
     MinValue: 3600
@@ -38,7 +38,7 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/ReadOnlyAccess"
-      MaxSessionDuration: 3600
+      MaxSessionDuration: !Ref pMaxApiSessionDuration
   rRoleReadOnlyWithBillingAccess:
     Type: "AWS::IAM::Role"
     Properties:
@@ -56,7 +56,7 @@ Resources:
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/ReadOnlyAccess"
         - "arn:aws:iam::aws:policy/job-function/Billing"
-      MaxSessionDuration: 3600
+      MaxSessionDuration: !Ref pMaxApiSessionDuration
   rPowerUserAccess:
     Type: "AWS::IAM::Role"
     Properties:
@@ -73,7 +73,7 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/PowerUserAccess"
-      MaxSessionDuration: 3600
+      MaxSessionDuration: !Ref pMaxApiSessionDuration
   rAdministratorAccess:
     Type: "AWS::IAM::Role"
     Properties:
@@ -90,7 +90,7 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AdministratorAccess"
-      MaxSessionDuration: 3600
+      MaxSessionDuration: !Ref pMaxApiSessionDuration
 
 ### Outputs
 Outputs:
