@@ -1,0 +1,117 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Template to create cross account roles for switching accounts.'
+
+### Parameters
+Parameters:
+  pMasterAwsAccountId:
+    Description: Account ID of the Master AWS Account
+    Type: Number
+    ConstraintDescription: Must be a valid AWS Account ID
+    MaxValue: 999999999999
+    MinValue: 111111111111
+  pChildAccountAlias:
+    Description: Alias for the child account
+    Type: String
+  pMaxSessionDuration:
+    Description: Session duration in seconds (Min - 1hr, Max - 12 hrs)
+    Type: Number
+    MaxValue: 43200
+    MinValue: 3600
+    Default: 3600
+
+### Resources
+Resources:
+  rRoleReadOnlyAccess:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              AWS: !Sub
+                - arn:aws:iam::${MasterAccountID}:root
+                - {MasterAccountID: !Ref pMasterAwsAccountId}
+            Action: 
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/ReadOnlyAccess"
+      MaxSessionDuration: 3600
+  rRoleReadOnlyWithBillingAccess:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              AWS: !Sub
+                - arn:aws:iam::${MasterAccountID}:root
+                - {MasterAccountID: !Ref pMasterAwsAccountId}
+            Action: 
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/ReadOnlyAccess"
+        - "arn:aws:iam::aws:policy/job-function/Billing"
+      MaxSessionDuration: 3600
+  rPowerUserAccess:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              AWS: !Sub
+                - arn:aws:iam::${MasterAccountID}:root
+                - {MasterAccountID: !Ref pMasterAwsAccountId}
+            Action: 
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/PowerUserAccess"
+      MaxSessionDuration: 3600
+  rAdministratorAccess:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              AWS: !Sub
+                - arn:aws:iam::${MasterAccountID}:root
+                - {MasterAccountID: !Ref pMasterAwsAccountId}
+            Action: 
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AdministratorAccess"
+      MaxSessionDuration: 3600
+
+### Outputs
+Outputs:
+  oRoleReadOnlyAccess:
+    Description: Read Only Cross Account Role Signin Link
+    Value:
+      "Fn::Sub": |
+        https://signin.aws.amazon.com/switchrole?account=${AWS::AccountId}&roleName=${rRoleReadOnlyAccess}&displayName=x-read-only@${pChildAccountAlias}
+  oRoleReadOnlyWithBillingAccess:
+    Description: Read Only with Billing Cross Account Role Signin Link
+    Value:
+      "Fn::Sub": |
+        https://signin.aws.amazon.com/switchrole?account=${AWS::AccountId}&roleName=${rRoleReadOnlyWithBillingAccess}&displayName=x-read-only-wbilling@${pChildAccountAlias}
+  oPowerUserAccess:
+    Description: Power User Account Role Signin Link
+    Value:
+      "Fn::Sub": |
+        https://signin.aws.amazon.com/switchrole?account=${AWS::AccountId}&roleName=${rPowerUserAccess}&displayName=x-poweruser@${pChildAccountAlias}
+  oAdministratorAccess:
+    Description: Administrator Account Role Signin Link
+    Value:
+      "Fn::Sub": |
+        https://signin.aws.amazon.com/switchrole?account=${AWS::AccountId}&roleName=${rAdministratorAccess}&displayName=x-administrator@${pChildAccountAlias}
+
