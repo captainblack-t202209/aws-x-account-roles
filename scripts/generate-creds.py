@@ -5,6 +5,17 @@ from argparse import ArgumentParser
 
 
 def sts_assume_role(accountid, rolename):
+    """Returns a set of temporary security credentials (consisting
+    of an access key ID, a secret access key, and a security token) 
+    that you can use to access AWS resources.
+    
+    Args:
+        accountid: String
+        rolename: String
+    Returns:
+        Dictionary consisting of the Access Key, Secret Access Key,
+        Session Token and the Expiration date/time for the given key.
+    """
     session_name = getuser() + "-" + str(time.time())
     
     response = client.assume_role(
@@ -55,17 +66,3 @@ print("set AWS_SESSION_TOKEN=" + temporary_access_key['SessionToken'])
 utc_epoch = temporary_access_key['Expiration'].timestamp()
 expiration_local_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(utc_epoch))
 print("\nKeys will expire on: " + expiration_local_time + "\n")
-
-
-# def set_system_variables(access_key):
-#     os = platform.system()
-    
-#     if os is 'Linux' or 'Darwin':
-#         print('Yes ' + os)
-#     elif os is 'Windows':
-#         print('not set.')
-
-# check if credentials is to be automatically set
-# if args.auto is 'y':
-#     print('Setting AWS credentials...')
-#     subprocess.call(["export AWS_REGION=ap-southeast-2"], shell=True)
