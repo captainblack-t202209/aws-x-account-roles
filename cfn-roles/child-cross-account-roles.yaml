@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Template to create cross account roles for switching accounts.'
+Description: 'Template to create cross account roles for gaining access in the Member account.'
 
 ### Parameters
 Parameters:

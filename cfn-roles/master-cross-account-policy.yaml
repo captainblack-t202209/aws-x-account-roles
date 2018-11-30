@@ -1,0 +1,23 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Template to create cross account policy for gaining access in the Member account.'
+
+### Resources
+Resources:
+  rCrossAccountManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: "Allows users to make use of cross-account roles to log in to Member accounts."
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - 
+            Effect: "Allow"
+            Action: "sts:AssumeRole"
+            Resource: "*"
+
+### Outputs
+Outputs:
+  oCrossAccountManagedPolicy:
+    Description: Managed Cross Account Role Policy for Users / Groups
+    Value: !Ref rCrossAccountManagedPolicy
