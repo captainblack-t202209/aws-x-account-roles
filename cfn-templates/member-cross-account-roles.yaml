@@ -19,6 +19,33 @@ Parameters:
     MaxValue: 43200
     MinValue: 3600
     Default: 3600
+  pAllowReadOnlyWithBilling:
+    Description: Enables or disables the Read Only With Billing Role
+    Type: String
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+  pAllowPowerUserAccess:
+    Description: Enables or disables the Power User Role
+    Type: String
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+  pAllowAdminAccess:
+    Description: Enables or disables the Administrator Role
+    Type: String
+    Default: "Yes"
+    AllowedValues:
+      - "Yes"
+      - "No"
+
+### Conditions
+Conditions:
+  cCreateReadOnlyWithBillingRole: !Equals [!Ref pAllowReadOnlyWithBilling, "Yes"]
+  cCreatePowerUserAccessRole: !Equals [!Ref pAllowPowerUserAccess, "Yes"]
+  cCreateAdminAccessRole: !Equals [!Ref pAllowAdminAccess, "Yes"]
 
 ### Resources
 Resources:
@@ -41,6 +68,7 @@ Resources:
       MaxSessionDuration: !Ref pMaxApiSessionDuration
   rRoleReadOnlyWithBillingAccess:
     Type: "AWS::IAM::Role"
+    Condition: cCreateReadOnlyWithBillingRole
     Properties:
       AssumeRolePolicyDocument: 
         Version: "2012-10-17"
@@ -59,6 +87,7 @@ Resources:
       MaxSessionDuration: !Ref pMaxApiSessionDuration
   rPowerUserAccess:
     Type: "AWS::IAM::Role"
+    Condition: cCreatePowerUserAccessRole
     Properties:
       AssumeRolePolicyDocument: 
         Version: "2012-10-17"
@@ -76,6 +105,7 @@ Resources:
       MaxSessionDuration: !Ref pMaxApiSessionDuration
   rAdministratorAccess:
     Type: "AWS::IAM::Role"
+    Condition: cCreateAdminAccessRole
     Properties:
       AssumeRolePolicyDocument: 
         Version: "2012-10-17"
@@ -101,16 +131,19 @@ Outputs:
         https://signin.aws.amazon.com/switchrole?account=${AWS::AccountId}&roleName=${rRoleReadOnlyAccess}&displayName=x-read-only@${pChildAccountAlias}
   oRoleReadOnlyWithBillingAccess:
     Description: Read Only with Billing Cross Account Role Signin Link
+    Condition: cCreateReadOnlyWithBillingRole
     Value:
       "Fn::Sub": |
         https://signin.aws.amazon.com/switchrole?account=${AWS::AccountId}&roleName=${rRoleReadOnlyWithBillingAccess}&displayName=x-read-only-wbilling@${pChildAccountAlias}
   oPowerUserAccess:
     Description: Power User Account Role Signin Link
+    Condition: cCreatePowerUserAccessRole
     Value:
       "Fn::Sub": |
         https://signin.aws.amazon.com/switchrole?account=${AWS::AccountId}&roleName=${rPowerUserAccess}&displayName=x-poweruser@${pChildAccountAlias}
   oAdministratorAccess:
     Description: Administrator Account Role Signin Link
+    Condition: cCreateAdminAccessRole
     Value:
       "Fn::Sub": |
         https://signin.aws.amazon.com/switchrole?account=${AWS::AccountId}&roleName=${rAdministratorAccess}&displayName=x-administrator@${pChildAccountAlias}
