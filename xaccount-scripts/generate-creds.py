@@ -58,9 +58,12 @@ print("\nGenerating AWS CLI credentials...\n")
 client = boto3.client('sts')
 temporary_access_key = sts_assume_role(args.account, args.role)
 
-print("set AWS_ACCESS_KEY_ID=" + temporary_access_key['AccessKeyId'])
-print("set AWS_SECRET_ACCESS_KEY=" + temporary_access_key['SecretAccessKey'])
-print("set AWS_SESSION_TOKEN=" + temporary_access_key['SessionToken'])
+print("unset AWS_ACCESS_KEY_ID")
+print("unset AWS_SECRET_ACCESS_KEY")
+print("unset AWS_SESSION_TOKEN")
+print("export AWS_ACCESS_KEY_ID=" + temporary_access_key['AccessKeyId'])
+print("export AWS_SECRET_ACCESS_KEY=" + temporary_access_key['SecretAccessKey'])
+print("export AWS_SESSION_TOKEN=" + temporary_access_key['SessionToken'])
 
 # print key expiration date
 utc_epoch = temporary_access_key['Expiration'].timestamp()

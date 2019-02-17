@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Template to create cross account roles for gaining access in the Member account.'
+Description: 'Template to create cross account policy for gaining access in the Member account using STS.'
 
 ### Parameters
 Parameters:
@@ -121,7 +121,13 @@ Resources:
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AdministratorAccess"
       MaxSessionDuration: !Ref pMaxApiSessionDuration
-
+  rAccountAliasSSMStore:
+    Type: "AWS::SSM::Parameter"
+    Properties:
+      Description: Account Alias in IAM
+      Name: account-alias
+      Type: String
+      Value: !Ref pChildAccountAlias
 ### Outputs
 Outputs:
   oRoleReadOnlyAccess:

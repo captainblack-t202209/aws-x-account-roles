@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Template to create cross account policy for gaining access in the Member account.'
+Description: 'Template to create cross account policy for users for gaining access in Member accounts.'
 
 ### Resources
 Resources:
