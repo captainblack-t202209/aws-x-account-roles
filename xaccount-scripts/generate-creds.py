@@ -1,3 +1,6 @@
+"""This script uses the master account credentials and fetches the AWS CLI Access Key and Secret Access Key
+for a "member" account and sets it in the CLI environment.
+"""
 import boto3
 import time
 from getpass import getuser
