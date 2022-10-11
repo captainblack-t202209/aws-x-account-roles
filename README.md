@@ -1,6 +1,8 @@
 AWS Cross Account Roles
 ===
 
+UPDATE: You can now use [IAM Identity Center](https://aws.amazon.com/iam/identity-center/) (previously AWS SSO) to achieve account switching
+from a central location if your AWS accounts are members of an AWS Organization. For alternative methods, use may use this method.
 
 This project helps you to manage multiple AWS accounts by having to maintain login credentials in just a single (Master) account.
 
