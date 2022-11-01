@@ -21,4 +21,3 @@ This is achieved by granting the **Master** account access to resources in the *
 ### Generating AWS CLI Credentials:
 1. In order to generate CLI credentials, you will need to setup the cross account roles first.
 2. Then, setup the credentials of the Master account using the `aws configure` command.
-3. Once the credentials are setup, you can run the Python script which will generate temporary credentials (with default expiration set to 60 minutes).
