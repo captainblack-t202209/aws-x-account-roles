@@ -16,5 +16,3 @@ This is achieved by granting the **Master** account access to resources in the *
 5. You can then setup users / groups in the Master account by attaching the policy created from the Master CFN template.
 6. Once the users login to the Master account, they need to paste the link of the role of the Member account they wish to log in to. You will see a 'Switch Role' page from AWS to confirm the details.
 7. Once you click on Switch Role, you are now in the Member account and you'll have access as per the role you have selected.
-
-Thats all!
